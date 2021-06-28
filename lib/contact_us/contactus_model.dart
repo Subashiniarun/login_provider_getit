@@ -16,7 +16,7 @@ class ContactModel extends ChangeNotifier {
   ContactItem get email => _email;
   ContactItem get body => _body;
   ContactItem get sub => _sub;
-  List<String> attachment = <String>[];
+  //List<String> attachent = <String>[];
 
 
 
@@ -58,6 +58,7 @@ class ContactModel extends ChangeNotifier {
   String changeBody(String value) {
     if (value.length >= 10) {
       _body = ContactItem(value, "");
+      print("$body");
     } else {
       _body = ContactItem(value, "Must be at least 10 characters");
     }
@@ -85,11 +86,13 @@ class ContactModel extends ChangeNotifier {
     }*/
 
     // Platform messages may fail, so we use a try/catch PlatformException.
-    print("$_body");
+    print("Body : ${_body.value}");
+    print("email : ${_email.value}");
+
     final Email email = Email(
-      body: _body.toString(),
-      subject: _sub.toString(),
-      recipients: <String>[_email.toString()],
+      body: _body.value.toString(),
+      subject: _sub.value.toString(),
+      recipients: <String>[_email.value.toString()],
       cc: ['arunsuba157@gmail.com'],
      // bcc: ['arunsuba157@gmail.com'],
       //attachmentPaths: ['/path/to/attachment.zip'],
