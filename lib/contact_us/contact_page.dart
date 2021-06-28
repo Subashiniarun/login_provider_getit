@@ -11,7 +11,9 @@ class ContactPage extends StatelessWidget {
     final TextEditingController _name = TextEditingController();
     final TextEditingController _email = TextEditingController();
     final TextEditingController _body = TextEditingController();
+    final TextEditingController _sub = TextEditingController();
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    var submit;
 
 
     return ChangeNotifierProvider<ContactModel>(
@@ -19,8 +21,8 @@ class ContactPage extends StatelessWidget {
       child: Consumer<ContactModel>(
           builder: (_,model,__)=>
         Scaffold(
-
-          backgroundColor: Color(0xffeeeeee),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Color(0xffeeeeee),
         body: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10,),
@@ -43,37 +45,16 @@ class ContactPage extends StatelessWidget {
                     ),
                     color: Colors.white54,
                     child:TextFormField (
+                      controller: _name,
                       decoration: InputDecoration(
                       filled: true,
                         labelText: "Name",
-                        errorText: model.name.error ,//model.changeName()
+                        errorText: model.name.error,
                         border: InputBorder.none
                       ),
                       onChanged: (String value){
-                        model.name;//Provider.of<ContactModel>(context).changeName(value);
+                        model.changeName(_name.text);
 
-                      },
-                    ),
-                  ),
-                  Card(
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.symmetric(
-                      vertical: 10.0,
-                      horizontal: 25.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    color: Colors.white54,
-                    child:TextFormField (
-                      decoration: InputDecoration(
-                          filled: true,
-                          labelText: "Email",
-                          errorText: model.email.error,//Provider.of<ContactModel>(context).email.error,
-                          border: InputBorder.none
-                      ),
-                      onChanged: (String value){
-                        model.email;
                         //Provider.of<ContactModel>(context).changeName(value);
 
                       },
@@ -90,6 +71,34 @@ class ContactPage extends StatelessWidget {
                     ),
                     color: Colors.white54,
                     child:TextFormField (
+                      controller: _email,
+
+                      decoration: InputDecoration(
+                          filled: true,
+                          labelText: "Email",
+                          errorText: model.email.error,//Provider.of<ContactModel>(context).email.error,
+                          border: InputBorder.none
+                      ),
+                      onChanged: (String value){
+                        model.changeEmail(_email.text);
+                        //Provider.of<ContactModel>(context).changeName(value);
+
+                      },
+                    ),
+                  ),
+                  Card(
+                    clipBehavior: Clip.antiAlias,
+                    margin: EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 25.0,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    color: Colors.white54,
+                    child:TextFormField (
+                      controller: _sub,
+
                       decoration: InputDecoration(
                           filled: true,
                           labelText: "subject",
@@ -97,7 +106,7 @@ class ContactPage extends StatelessWidget {
                           border: InputBorder.none
                       ),
                       onChanged: (String value){
-                        model.sub;
+                        model.changesSub(_sub.text);
                         //Provider.of<ContactModel>(context).changeMessage(value);
 
                       },
@@ -114,6 +123,7 @@ class ContactPage extends StatelessWidget {
                     ),
                     color: Colors.white54,
                     child:TextFormField (
+                      controller: _body,
                       decoration: InputDecoration(
                           filled: true,
                           labelText: "body",
@@ -121,13 +131,25 @@ class ContactPage extends StatelessWidget {
                           border: InputBorder.none
                       ),
                       onChanged: (String value){
-                        model.body;
+                        model.changeBody(_body.text);
                         //Provider.of<ContactModel>(context).changeMessage(value);
 
                       },
                     ),
                   ),
-                  MaterialButton(onPressed: ()=> model.send(),
+                  MaterialButton(onPressed: (){
+                    if (_name !=null && _email !=null && _body !=null && _sub !=null){
+                      print(" $_name \n $_email \n $_sub \n  $_body");
+                      submit = model.send();
+
+                      return submit;
+
+                    }else {
+                      print("Fill the items");
+                      return null;
+                    }
+
+                  },
                     color: Colors.white38,
                   child: Text(
                     "Submit", style: TextStyle(fontSize: 12),
